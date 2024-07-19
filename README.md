@@ -4,6 +4,12 @@ run `docker-compose up`
 
 You are good to go. Navigate to http://127.0.0.1:8000/docs and try the post method
 
+For running a test, validate the dickers is up by executing `docker ps`
+
+connect to `{folder_name}-web-1` container by `docker exec -it tmr-web-1 /bin/sh`
+
+run `pytest`
+
 You can see in the logs the proccess.
  ```INFO:root:Producer started
 web-1               | INFO:root:Producer sent event='{"request_id":"1qaz1qa","event_id":"1qaz1qa","role_id":"string","event_type":"string","event_timestamp":"2024-07-18T23:45:51.475000Z","affected_assets":["string"]}'
