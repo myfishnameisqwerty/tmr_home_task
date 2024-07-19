@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 DYNAMODB_HEALTH_CHECK_URL = os.getenv(
     "DYNAMODB_HEALTH_CHECK_URL", "http://localstack:4566/_localstack/health"
 )
-KAFKA_SERVERS = os.getenv("KAFKA_SERVERS", "http://kafka:29092")
+KAFKA_SERVERS = os.getenv("KAFKA_SERVERS", "http://localhost:29092")
 
 
 async def get_anomaly_score(event):

@@ -1,7 +1,6 @@
 import logging
 import os
 import aioboto3
-from botocore.exceptions import ClientError
 
 
 logging.basicConfig(level=logging.INFO)

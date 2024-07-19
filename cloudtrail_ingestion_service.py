@@ -4,12 +4,13 @@ import os
 import sys
 
 from fastapi import FastAPI
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from typing import List
-import datetime
+from datetime import datetime
 from health import retry_check_service
 from kafka_producer import KafkaEventProducer
 from s3_hooks import DynamoDBClient
+from dateutil import parser
 
 
 logging.basicConfig(level=logging.INFO)
@@ -28,9 +29,7 @@ app = FastAPI()
 
 @app.on_event("startup")
 async def startup_event():
-    if not await retry_check_service(
-        "DynamoDB", DYNAMODB_HEALTH_CHECK_URL
-    ):
+    if not await retry_check_service("DynamoDB", DYNAMODB_HEALTH_CHECK_URL):
         sys.exit(1)
     global db
     db = DynamoDBClient()
@@ -43,7 +42,7 @@ class Item(BaseModel):
     event_id: str
     role_id: str
     event_type: str
-    event_timestamp: datetime.datetime
+    event_timestamp: datetime
     affected_assets: List[str]
 
 
