@@ -4,11 +4,13 @@ run `docker-compose up`
 
 You are good to go. Navigate to http://127.0.0.1:8000/docs and try the post method
 
-For running a test, validate the dockers is up by executing `docker ps`
+For running a test, validate the dockers is up by executing ```docker ps```
 
-connect to `{folder_name}-web-1` container by `docker exec -it tmr-web-1 /bin/sh`
+connect to `{folder_name}-web-1` container by ```docker exec -it {folder_name}-web-1 /bin/sh```
 
-run `pytest`
+run ```pytest```
+
+![docker-log](https://github.com/user-attachments/assets/9dfc7aea-cc5a-4be4-824d-76987a186d8e)
 
 You can see in the logs the proccess.
  ```INFO:root:Producer started
@@ -42,6 +44,4 @@ anomaly_detector-1  | INFO:root:Consumer event='{"request_id":"qwe","event_id":"
 localstack-1        | 2024-07-19T00:04:37.706  INFO --- [et.reactor-0] localstack.request.aws     : AWS dynamodb.GetItem => 200
 web-1               | INFO:root:Producer stopped```
 
-
-![docker-log](https://github.com/user-attachments/assets/c81688c7-be17-4b4a-8679-1a96073ef156)
 
