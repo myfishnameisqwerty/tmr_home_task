@@ -41,3 +41,7 @@ web-1               | INFO:root:Producer sent event='{"request_id":"qwe","event_
 anomaly_detector-1  | INFO:root:Consumer event='{"request_id":"qwe","event_id":"ereew","role_id":"string","event_type":"string","event_timestamp":"2024-07-18T23:45:51.475000Z","affected_assets":["string"]}'
 localstack-1        | 2024-07-19T00:04:37.706  INFO --- [et.reactor-0] localstack.request.aws     : AWS dynamodb.GetItem => 200
 web-1               | INFO:root:Producer stopped```
+
+
+![docker-log](https://github.com/user-attachments/assets/c81688c7-be17-4b4a-8679-1a96073ef156)
+
