@@ -4,7 +4,7 @@ run `docker-compose up`
 
 You are good to go. Navigate to http://127.0.0.1:8000/docs and try the post method
 
-For running a test, validate the dickers is up by executing `docker ps`
+For running a test, validate the dockers is up by executing `docker ps`
 
 connect to `{folder_name}-web-1` container by `docker exec -it tmr-web-1 /bin/sh`
 
