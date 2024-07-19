@@ -10,8 +10,6 @@ connect to `{folder_name}-web-1` container by ```docker exec -it {folder_name}-w
 
 run ```pytest```
 
-![docker-log](https://github.com/user-attachments/assets/9dfc7aea-cc5a-4be4-824d-76987a186d8e)
-
 You can see in the logs the proccess.
  ```INFO:root:Producer started
 web-1               | INFO:root:Producer sent event='{"request_id":"1qaz1qa","event_id":"1qaz1qa","role_id":"string","event_type":"string","event_timestamp":"2024-07-18T23:45:51.475000Z","affected_assets":["string"]}'
