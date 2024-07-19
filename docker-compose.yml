@@ -1,0 +1,78 @@
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.4.4
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
+    ports:
+      - 22181:2181
+  
+  kafka:
+    image: confluentinc/cp-kafka:7.4.4
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+  
+  web:
+    image: python:3.11-slim
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - KAFKA_SERVERS=kafka:9092
+      - REGION=us-east-1
+      - DYNAMODB_URL=http://localstack:4566
+      - DYNAMODB_HEALTH_CHECK_URL=http://localstack:4566/_localstack/health
+      - AWS_ACCESS_KEY_ID=fakeAccessKey
+      - AWS_SECRET_ACCESS_KEY=fakeSecretKey
+      - MAX_RETRIES_ON_START=5
+      - RETRY_DELAY=15
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+             uvicorn cloudtrail_ingestion_service:app --host 0.0.0.0 --port 8000"
+    depends_on:
+      localstack:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+
+  anomaly_detector:
+    image: python:3.11-slim
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DYNAMODB_HEALTH_CHECK_URL=http://localstack:4566/_localstack/health
+      - KAFKA_SERVERS=kafka:9092
+      - DYNAMODB_URL=http://localstack:4566
+      - REGION=us-east-1
+      - AWS_ACCESS_KEY_ID=fakeAccessKey
+      - AWS_SECRET_ACCESS_KEY=fakeSecretKey
+      - MAX_RETRIES_ON_START=5
+      - RETRY_DELAY=15
+    command: >
+      sh -c "pip install --no-cache-dir -r requirements.txt &&
+             python anomaly_detector_worker.py"
+    depends_on:
+      localstack:
+        condition: service_healthy
+      kafka:
+        condition: service_started
